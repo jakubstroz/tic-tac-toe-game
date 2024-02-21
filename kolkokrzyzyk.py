@@ -9,36 +9,22 @@ class Table:
 
 
     def check_win(self) -> bool:
+        # check rows 
+        for row in self.tab:
+            if row[0] == row[1] == row[2] != '-':
+                return True
+        # check columns
+        for i in range(3):
+            if self.tab[0][i] == self.tab[1][i] == self.tab[2][i] != '-':
+                return True
+
+       #check diagonal
+        if self.tab[1][1] == self.tab[0][0] == self.tab[2][2] != '-':
+            return True
+        if self.tab[1][1] == self.tab[0][2] == self.tab[2][0] != '-':
+            return True
         
-        chars = ['x','o']
-        result = self.tab
-
-        for char in chars:
-            if char in result[0] or char in result[1] or char in result[2]:
-
-                for x in result:
-
-                    if x.count(char) == 3:
-
-                        return True
-                i = 0
-                for _ in range(3):
-
-                    if self.tab[0][i] == char and self.tab[1][i] == char and self.tab[2][i] == char:
-                        return True
-                    i += 1
-                if self.tab[1][1] == char:
-                    if self.tab[0][0] == char and self.tab[2][2] == char:
-                        return True
-                    if self.tab[2][0] == char and self.tab[0][2] == char:
-                        return True
         
-        for x in result:
-            if '-' not in x:
-                return 
-
-        return False
-
     def print_table(self):
 
         print('*'*20)
@@ -64,8 +50,8 @@ class Game():
     def move(self, char):
         self.table.print_table()
         possible_moves = ['A3','A1','A2','B3','B1','B2','C3','C1','C2']
-        ver = False
-        while ver != True:
+        valid_move = False
+        while valid_move != True:
             place = input(f'PODAJ POLE DLA {char}: ')
             place = place.upper()
             if place in possible_moves or place[::-1] in possible_moves:
@@ -80,7 +66,7 @@ class Game():
                     x = 2
                 if self.table.tab[int(place[0])-1][x] == '-':
                     self.table.tab[int(place[0])-1][x] = char
-                    ver = True
+                    valid_move = True
                 else:
                     print('pole zajęte podaj inne pole')
             else:
@@ -93,9 +79,12 @@ class Game():
             print(f'!!!!!! {char} - wins  !!!!!')
             return True
         
-        if self.table.draw():
-            self.table.print_table()
-            print('ITS A DRAW, TRY AGAIN')
+        counter = 0
+        for rows in self.table.tab:
+            if rows.count('-') == 0:
+                counter += 1
+        if counter == 3:
+            self.table.draw()
 
         return False
         
@@ -116,6 +105,7 @@ def main():
                     break
                 if game.move('o'):
                     break
+            choose = input('1 - nowa gra \n0 - zakończ grę \n:')
 
 
         if choose == '0':
