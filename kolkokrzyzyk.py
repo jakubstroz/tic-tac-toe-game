@@ -26,7 +26,7 @@ class Table:
         
         
     def print_table(self):
-
+        
         print('*'*20)
         print('            ABC')
         print('          1', ''.join(self.tab[0]))
@@ -54,8 +54,8 @@ class Game():
         while valid_move != True:
             place = input(f'PODAJ POLE DLA {char}: ')
             place = place.upper()
-            if place in possible_moves or place[::-1] in possible_moves:
 
+            if place in possible_moves or place[::-1] in possible_moves:
                 if place[0].isalpha():
                     place = place[::-1]
                 if place[1] == 'A':
@@ -85,18 +85,17 @@ class Game():
                 counter += 1
         if counter == 3:
             self.table.draw()
-
         return False
         
 def main():
+
     while True:
         choose = input("""
             1. NOWA GRA
 
             0. ZAKOŃCZ
-               """)
+                      """)
         
-
         if choose == '1':
             game = Game()
             game.new_game()
